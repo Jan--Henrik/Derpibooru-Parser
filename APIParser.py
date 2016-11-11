@@ -67,6 +67,8 @@ class APIParser:
                     self.imgList.append(__tmp)
                 except:
                     break
+            sys.stderr.write('%s Images\r' % (len(self.imgList))),
+            sys.stderr.flush()
             self.imgPage += 1
 
     def save(self):
