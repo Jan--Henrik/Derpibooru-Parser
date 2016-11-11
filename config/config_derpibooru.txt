@@ -3,6 +3,6 @@ hereticStr:&
 urlSearchStr:q=
 pageStr:page=
 keyStr:
-filePrefix:TS
 key:
-fileSize:2000
+fileSize:50000
+imgSize:full

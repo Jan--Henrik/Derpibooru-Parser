@@ -4,4 +4,8 @@ urlSearchStr:q=					Search option
 pageStr:page=					Page number option
 keyStr:						Key option				
 key:--------------------			Personal key
-fileSize:2000					max Filesize
+fileSize:50000					max Filesize (number of links)
+imgSize:small					imagesize 
+thumb_small,thumb_tiny,thumb,small,medium,large,tall,full,mp4
+
+

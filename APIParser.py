@@ -39,6 +39,7 @@ class APIParser:
         self.key = str(config_dict['key'])
 
         self.fileSize = int(config_dict['fileSize'])
+        self.imgSize = str(config_dict['imgSize'])
 
     def run(self):
         while self.dataTrue:
@@ -61,7 +62,7 @@ class APIParser:
 
             while True:
                 try:
-                    __tmp = data['search'][cnt]['representations']['medium']
+                    __tmp = data['search'][cnt]['representations'][self.imgSize]
                     cnt += 1
                     self.imgList.append(__tmp)
                 except:
