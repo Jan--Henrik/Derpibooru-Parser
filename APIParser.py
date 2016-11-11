@@ -69,7 +69,6 @@ class APIParser:
             self.imgPage += 1
 
     def save(self):
-        print(len(self.imgList))
         target = open("data/%s%d%s" % (self.filePrefix, self.fileCounter, self.fileSuffix),'a+')
         for img in self.imgList:
             if self.imgCounter == self.fileSize:
@@ -80,7 +79,7 @@ class APIParser:
             target.write(img + "\n")
             target.flush()
             self.imgCounter += 1
-        print(self.imgCounter)
+        print(self.imgCounter + (self.fileCounter * self.fileSize))
         target.close()
 
     def exit(self):
