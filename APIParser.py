@@ -5,7 +5,7 @@ import sys
 
 tags = sys.argv[1]
 filename = sys.argv[2]
-config = sys.argv[3]
+config = "/home/janhenrik/PycharmProjects/APIParser/config/config_derpibooru.txt"
 
 class APIParser:
     def __init__(self, taglist="", filename="", config=""):
@@ -39,7 +39,6 @@ class APIParser:
         self.key = str(config_dict['key'])
 
         self.fileSize = int(config_dict['fileSize'])
-        self.imgSize = str(config_dict['imgSize'])
 
     def run(self):
         while self.dataTrue:
@@ -49,11 +48,11 @@ class APIParser:
 
     def download(self):
         self.imgList = []
+        loadlist = ['.  ','.. ','...']
         while True:
             url = self.urlStr + self.pageStr + str(self.imgPage) + self.hereticStr + self.urlSearchStr + self.tagList + self.hereticStr + self.keyStr + self.key
             self.page = urllib.request.urlopen(url).read()
             self.page = self.page.decode("utf-8")
-
             if len(self.page) <= 100:
                 self.dataTrue = False
                 break
@@ -62,18 +61,28 @@ class APIParser:
 
             while True:
                 try:
-                    __tmp = data['search'][cnt]['representations'][self.imgSize]
+                    __tmp = data['search'][cnt]['representations']['small']
                     cnt += 1
                     self.imgList.append(__tmp)
                 except:
                     break
-            sys.stderr.write('%s Images\r' % (len(self.imgList))),
+            sys.stderr.write('Running%s\r' % (loadlist[self.imgPage % 3])),
             sys.stderr.flush()
             self.imgPage += 1
 
+
+
+
     def save(self):
         target = open("data/%s%d%s" % (self.filePrefix, self.fileCounter, self.fileSuffix),'a+')
-        for img in self.imgList:
+        __tmp = []
+        for line in self.uniq(sorted(self.imgList)):
+            __tmp.append(line)
+
+        sys.stderr.write('Done, now saving %d links\r' % (len(__tmp)))
+        sys.stderr.flush()
+
+        for img in __tmp:
             if self.imgCounter == self.fileSize:
                 self.imgCounter = 0
                 self.fileCounter += 1
@@ -82,10 +91,19 @@ class APIParser:
             target.write(img + "\n")
             target.flush()
             self.imgCounter += 1
-        print(self.imgCounter + (self.fileCounter * self.fileSize))
         target.close()
 
+    def uniq(self,iterator):
+        previous = float("NaN")  # Not equal to anything
+        for value in iterator:
+            if previous != value:
+                yield value
+                previous = value
+
     def exit(self):
+        sys.stderr.write('Done, saved to file(s) \"%sx%s\"\n' % (self.filePrefix,self.fileSuffix))
+        sys.stderr.flush()
+
         exit()
 
 
