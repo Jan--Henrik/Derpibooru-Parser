@@ -1,11 +1,11 @@
-#!/bin/python3.5
+#!/usr/bin/python3.6
 import urllib.request
 import json
 import sys
 
 tags = sys.argv[1]
 filename = sys.argv[2]
-config = "/home/janhenrik/PycharmProjects/APIParser/config/config_derpibooru.txt"
+config = sys.argv[3]
 
 class APIParser:
     def __init__(self, taglist="", filename="", config=""):
@@ -35,9 +35,7 @@ class APIParser:
         self.urlSearchStr = str(config_dict['urlSearchStr'])
         self.pageStr = str(config_dict['pageStr'])
         self.keyStr = str(config_dict['keyStr'])
-
         self.key = str(config_dict['key'])
-
         self.fileSize = int(config_dict['fileSize'])
 
     def run(self):
@@ -74,7 +72,7 @@ class APIParser:
 
 
     def save(self):
-        target = open("data/%s%d%s" % (self.filePrefix, self.fileCounter, self.fileSuffix),'a+')
+        target = open("data/%s%d%s" % (self.filePrefix, self.fileCounter, self.fileSuffix),'w+')
         __tmp = []
         for line in self.uniq(sorted(self.imgList)):
             __tmp.append(line)
@@ -87,7 +85,7 @@ class APIParser:
                 self.imgCounter = 0
                 self.fileCounter += 1
                 target.close()
-                target = open("data/%s%d%s" % (self.filePrefix, self.fileCounter, self.fileSuffix),'a+')
+                target = open("data/%s%d%s" % (self.filePrefix, self.fileCounter, self.fileSuffix),'w+')
             target.write(img + "\n")
             target.flush()
             self.imgCounter += 1
@@ -101,7 +99,7 @@ class APIParser:
                 previous = value
 
     def exit(self):
-        sys.stderr.write('Done, saved to file(s) \"%sx%s\"\n' % (self.filePrefix,self.fileSuffix))
+        sys.stderr.write('Done, saved to file(s) \"%s%s\"\n' % (self.filePrefix,self.fileSuffix))
         sys.stderr.flush()
 
         exit()
